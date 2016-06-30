@@ -20,7 +20,7 @@ USB_PATH = '/media/photobooth/';
 
 
 #webserver - gallery directory
-SAVE_TO_GALLERY = True
+SAVE_TO_GALLERY = False
 GALLERY_DIRECTORY = '/var/www/html/photo-booth/pictures/';
 
 
