@@ -139,7 +139,7 @@ Info2: I somehow had problems to unzip the file, soo I did that on my Mac and co
 2. if usb is used
 	* format = FAT 
 	* name = PHOTOBOOTH
-3. make sure you are in the directory /home/pi/pi-photo-booth and run
+3. make sure you are in the directory /home/pi/raspberry-pi-photo-booth/ and run
 	* ./start-booth-usb.sh or
 	* ./start-booth.sh
 4. when finished run
