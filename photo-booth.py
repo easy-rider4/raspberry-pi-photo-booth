@@ -12,12 +12,8 @@ from PIL import Image
 
 # -------------- set GPIO-Input
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP) # normal mode
+GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP) # start taken pics
 GPIO.setup(25, GPIO.IN, pull_up_down=GPIO.PUD_UP) # exit program
-
-# -------------- variables
-row_size = config.NUMBER_OF_PICTURES
-margin = 10
 
 
 # -------------- functions
@@ -60,15 +56,39 @@ def generate_collage(files):
         # save & display
         display_image(save_image(new_im))       
 
+def save_taken_pics_to_usb(pictureList):
+    countList = 0
+    while (countList < len(pictureList)):
+        currentImage = Image.open(pictureList[countList])
+
+        newUsbImage = Image.new("RGB", (currentImage.size[0], currentImage.size[1]), "white")
+        newUsbImage.paste(currentImage, (0,0))
+
+        timestampAsString = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d_%H-%M-%S')
+        usbFileName = config.USB_PATH + '' + str(timestampAsString) + '.jpg'
+        newUsbImage.save(usbFileName)
+
+        countList = countList + 1
+
     
-#returns filename
+#returns filename collage
 def save_image(new_im):
     timestampAsString = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d_%H-%M-%S')
-    collageFile = 'pictures/collage_' + str(timestampAsString) + '.jpg'
-    if (config.USB_PATH != ''):
-        collageFile = config.USB_PATH + 'collage_' + str(timestampAsString) + '.jpg'
+
+    if (config.SAVE_TO_GALLERY):
+        #webserver gallery enabled = true -> save to gallery
+        collageFile = config.GALLERY_DIRECTORY + 'collage_' + str(timestampAsString) + '.jpg'
+    else:
+        #else -> save to local pictures directory
+        collageFile = 'pictures/collage_' + str(timestampAsString) + '.jpg'
     new_im.save(collageFile)
-    return collageFile           
+
+    if (config.USB_PATH != ''):
+        usbFile = config.USB_PATH + 'collage_' + str(timestampAsString) + '.jpg'
+        new_im.save(usbFile)
+        
+    return collageFile
+
 
 #displays one pic               
 def display_image(dis_im):
@@ -76,6 +96,7 @@ def display_image(dis_im):
     time.sleep(3);
     viewer.terminate()
     viewer.kill()           
+
     
 #displays a list of pics
 def display_taken_pics(takenPics):
@@ -96,6 +117,9 @@ def display_taken_pics(takenPics):
 
 
 # -------------- script
+
+print('Welcome to raspberry-pi-photo-booth')
+
 # open background image
 viewer = subprocess.Popen(['feh', '--fullscreen', config.BACKGROUND_IMAGE])
 
@@ -106,17 +130,10 @@ while True:
     # ----- take normal pics
     if (GPIO.input(24) == False):
 
-        #close background image
-	#viewer.terminate()
-	#viewer.kill()
-
         # get pi camera
 	camera = picamera.PiCamera()
+	takenPics = []
         
-        print('Welcome to photo-booth')
-
-        takenPics = []
-            
         try:
             camera.resolution = (config.RATIO_X, config.RATIO_Y)
             camera.start_preview()
@@ -144,15 +161,18 @@ while True:
                 else:
                     camera.annotate_text = ' '
 
-                #path to storage
-                storagePath = 'pictures/' + str(timestampAsString) + '.jpg'
-                if (config.USB_PATH != ''):
-                    storagePath = config.USB_PATH + str(timestampAsString) + '.jpg'
+                #create file path
+                if (config.SAVE_TO_GALLERY):
+                    #webserver gallery enabled = true -> save to gallery
+                    newFilePath = config.GALLERY_DIRECTORY + '' + str(timestampAsString) + '.jpg'
+                else:
+                    #else -> save to local pictures directory
+                    newFilePath = 'pictures/' + str(timestampAsString) + '.jpg'
 
 
                 #take picture
-                camera.capture(storagePath)
-                takenPics.append(storagePath)
+                camera.capture(newFilePath)
+                takenPics.append(newFilePath)
 
                     
             #stop preview
@@ -161,6 +181,10 @@ while True:
         finally:
             camera.close()
 
+
+        #save pics to usb
+        if (config.USB_PATH != ''):
+            save_taken_pics_to_usb(takenPics)
 
 
         #display taken pictures

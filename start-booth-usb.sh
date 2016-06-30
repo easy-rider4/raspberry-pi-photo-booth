@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo "clean up old entries"
-sudo rm -r /media/photobooth
-
 echo "remove usb - because of auto mount"
 sudo umount /media/photobooth
+
+echo "clean up old entries"
+sudo rm -r /media/photobooth
 
 echo "create directory"
 sudo mkdir /media/photobooth
