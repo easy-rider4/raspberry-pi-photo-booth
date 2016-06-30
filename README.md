@@ -36,7 +36,6 @@ todo
 3. make sure you are in the directory /home/pi/pi-photo-booth and run
 	* ./start-booth-usb.sh or
 	* ./start-booth.sh
-
 4. when finished run
 	* ./remove-usb.sh
 
