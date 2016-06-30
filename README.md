@@ -63,13 +63,13 @@ These steps are from a tutorial: http://www.forum-raspberrypi.de/Thread-tutorial
 
 1. `sudo apt-get install profited`
 2. `sudo nano /etc/proftpd/proftpd.conf`
-	```
-	DefaultRoot ~
-	AuthOrder mod_auth_file.c mod_auth_unix.c
-	AuthUserFile /etc/proftpd/ftpd.passwd
-	AuthPAM off
-	RequireValidShell off
-	```
+```
+DefaultRoot ~
+AuthOrder mod_auth_file.c mod_auth_unix.c
+AuthUserFile /etc/proftpd/ftpd.passwd
+AuthPAM off
+RequireValidShell off
+```
 3. `cd /etc/proftpd/`
 4. `sudo ftpasswd - -passwd - -name <name> - -uid 33 - -gid 33 - -home /var/www - -shell /bin/false`
 5. `sudo /etc/init.d/proftpd restart`
@@ -126,6 +126,7 @@ This part here is optional. You don't need to install the web gallery to run the
 	* open browser: <ipaddress>/photo-booth
 	
 Info: you need to paste some pics into the directory to see the thumbnails
+
 Info2: I somehow had problems to unzip the file, soo I did that on my Mac and copied the files via ftp to the raspberry pi
 
 ## Run
