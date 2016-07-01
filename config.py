@@ -12,7 +12,7 @@ INTERVAL_IN_SECONDS = 3
 
 # define the ratio of the picamera: default is monitor size and max is 2592,1944
 RATIO_X = 1920
-RATIO_Y = 1125
+RATIO_Y = 1200
 
 
 #example /media/<usbstick>/
