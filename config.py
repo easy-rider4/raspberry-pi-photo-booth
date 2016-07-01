@@ -25,7 +25,7 @@ GALLERY_DIRECTORY = '/var/www/html/photo-booth/pictures/';
 
 
 #will be shown as default background image when no pictures are taken
-BACKGROUND_IMAGE = '/home/pi/raspberry-pi-photo-booth/images/background1.jpg'
+BACKGROUND_IMAGE = '/home/pi/raspberry-pi-photo-booth/images/photos.jpg'
 
 
 #number of seconds the last taken picture is shown after capturing it
