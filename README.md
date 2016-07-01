@@ -1,6 +1,7 @@
 # Photo-booth
 
-This is the code for a Raspberry Pi photo-booth in python.
+This is the code for a Raspberry Pi photo-booth in python. You can find a more detailed description of the creation process of the photo-booth on
+https://programm4fun.blogspot.de
 
 ## Hardware
 - Raspberry Pi 2 Model B
