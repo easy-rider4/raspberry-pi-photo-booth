@@ -56,28 +56,6 @@ sudo apt-get upgrade
 ```
 the upgrade will probably take a while, so lean back and wait...
 
-### Install ftp server
-The ftp server will allow you to better access the raspberry pi files and for example
-copy the taken pictures to another computer.
-
-These steps are from a tutorial: http://www.forum-raspberrypi.de/Thread-tutorial-raspberry-pi-als-webserver-ftp-server-proftpd-installation
-
-1. `sudo apt-get install profited`
-2. `sudo nano /etc/proftpd/proftpd.conf`
-```
-DefaultRoot ~
-AuthOrder mod_auth_file.c mod_auth_unix.c
-AuthUserFile /etc/proftpd/ftpd.passwd
-AuthPAM off
-RequireValidShell off
-```
-3. `cd /etc/proftpd/`
-4. `sudo ftpasswd - -passwd - -name <name> - -uid 33 - -gid 33 - -home /var/www - -shell /bin/false`
-5. `sudo /etc/init.d/proftpd restart`
-6. `sudo chmod g+s /var/www`
-7. `sudo chmod 775 /var/www`
-8. `sudo chown -R www-data:www-data /var/www`
-
 ### Dependencies
 1. python 
 	* is preinstalled
@@ -129,6 +107,28 @@ This part here is optional. You don't need to install the web gallery to run the
 Info: you need to paste some pics into the directory to see the thumbnails
 
 Info2: I somehow had problems to unzip the file, soo I did that on my Mac and copied the files via ftp to the raspberry pi
+
+### Install ftp server
+The ftp server will allow you to better access the raspberry pi files and for example
+copy the taken pictures to another computer.
+
+These steps are from a tutorial: http://www.forum-raspberrypi.de/Thread-tutorial-raspberry-pi-als-webserver-ftp-server-proftpd-installation
+
+1. `sudo apt-get install proftpd`
+2. `sudo nano /etc/proftpd/proftpd.conf`
+```
+DefaultRoot ~
+AuthOrder mod_auth_file.c mod_auth_unix.c
+AuthUserFile /etc/proftpd/ftpd.passwd
+AuthPAM off
+RequireValidShell off
+```
+3. `cd /etc/proftpd/`
+4. `sudo ftpasswd - -passwd - -name <name> - -uid 33 - -gid 33 - -home /var/www - -shell /bin/false`
+5. `sudo /etc/init.d/proftpd restart`
+6. `sudo chmod g+s /var/www`
+7. `sudo chmod 775 /var/www`
+8. `sudo chown -R www-data:www-data /var/www`
 
 ## Run
 1. config.py
